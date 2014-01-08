@@ -24,27 +24,32 @@ namespace Microsoft.AspNet.SignalR.ServiceBus
         private readonly NamespaceManager _namespaceManager;
         private readonly MessagingFactory _factory;
         private readonly ServiceBusScaleoutConfiguration _configuration;
+        private readonly ServiceBusConnectionStringBuilder _connectionStringBuilder;
         private readonly TraceSource _trace;
 
         public ServiceBusConnection(ServiceBusScaleoutConfiguration configuration, TraceSource traceSource)
         {
             _trace = traceSource;
 
+            _connectionStringBuilder = new ServiceBusConnectionStringBuilder(configuration.ConnectionString);
+
+            if (configuration.OperationTimeout != null)
+            {
+                _connectionStringBuilder.OperationTimeout = configuration.OperationTimeout.Value;
+            }
+                        
             try
             {
-                _namespaceManager = NamespaceManager.CreateFromConnectionString(configuration.ConnectionString);
-                _factory = MessagingFactory.CreateFromConnectionString(configuration.ConnectionString);
+                _namespaceManager = NamespaceManager.CreateFromConnectionString(_connectionStringBuilder.ToString());
+                _factory = MessagingFactory.CreateFromConnectionString(_connectionStringBuilder.ToString());
                 _factory.RetryPolicy = RetryExponential.Default;
             }
             catch (ConfigurationErrorsException ex)
             {
-                _trace.TraceError("Invalid connection string '{0}': {1}", configuration.ConnectionString, ex.Message);
+                _trace.TraceError("Invalid connection string '{0}': {1}", _connectionStringBuilder.ToString(), ex.Message);
             }
 
-            if (configuration.OperationTimeout != null)
-            {
-                _factory.GetSettings().OperationTimeout = configuration.OperationTimeout.Value;
-            }
+            
             _idleSubscriptionTimeout = configuration.IdleSubscriptionTimeout;
             _configuration = configuration;
         }
@@ -109,7 +114,7 @@ namespace Microsoft.AspNet.SignalR.ServiceBus
                 }
 
                 // Create a client for this topic
-                TopicClient topicClient = TopicClient.CreateFromConnectionString(_configuration.ConnectionString, topicName);
+                TopicClient topicClient = TopicClient.CreateFromConnectionString(_connectionStringBuilder.ToString(), topicName);
                 connectionContext.SetTopicClients(topicClient, topicIndex);
 
                 _trace.TraceInformation("Creation of a new topic client {0} completed successfully.", topicName);
