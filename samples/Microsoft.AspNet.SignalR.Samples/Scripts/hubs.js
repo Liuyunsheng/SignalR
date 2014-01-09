@@ -1,5 +1,5 @@
 /*!
- * ASP.NET SignalR JavaScript Library v2.0.2-pre
+ * ASP.NET SignalR JavaScript Library v2.1.0-pre
  * http://signalr.net/
  *
  * Copyright Microsoft Open Technologies, Inc. All rights reserved.
@@ -246,6 +246,12 @@
             readStateValue: function () {
             /// <summary>Calls the ReadStateValue method on the server-side demo hub.&#10;Returns a jQuery.Deferred() promise.</summary>
                 return proxies.demo.invoke.apply(proxies.demo, $.merge(["ReadStateValue"], $.makeArray(arguments)));
+             },
+
+            reportProgress: function (jobName) {
+            /// <summary>Calls the ReportProgress method on the server-side demo hub.&#10;Returns a jQuery.Deferred() promise.</summary>
+            /// <param name=\"jobName\" type=\"String\">Server side type is System.String</param>
+                return proxies.demo.invoke.apply(proxies.demo, $.merge(["ReportProgress"], $.makeArray(arguments)));
              },
 
             returnLargePayload: function () {
@@ -677,12 +683,31 @@
              }
         };
 
+        proxies.typedDemoHub = this.createHubProxy('typedDemoHub'); 
+        proxies.typedDemoHub.client = { };
+        proxies.typedDemoHub.server = {
+            echo: function (message) {
+            /// <summary>Calls the Echo method on the server-side TypedDemoHub hub.&#10;Returns a jQuery.Deferred() promise.</summary>
+            /// <param name=\"message\" type=\"String\">Server side type is System.String</param>
+                return proxies.typedDemoHub.invoke.apply(proxies.typedDemoHub, $.merge(["Echo"], $.makeArray(arguments)));
+             }
+        };
+
         proxies.userAndRoleAuthHub = this.createHubProxy('userAndRoleAuthHub'); 
         proxies.userAndRoleAuthHub.client = { };
         proxies.userAndRoleAuthHub.server = {
             invokedFromClient: function () {
             /// <summary>Calls the InvokedFromClient method on the server-side UserAndRoleAuthHub hub.&#10;Returns a jQuery.Deferred() promise.</summary>
                 return proxies.userAndRoleAuthHub.invoke.apply(proxies.userAndRoleAuthHub, $.merge(["InvokedFromClient"], $.makeArray(arguments)));
+             }
+        };
+
+        proxies.VBDemo = this.createHubProxy('VBDemo'); 
+        proxies.VBDemo.client = { };
+        proxies.VBDemo.server = {
+            readStateValue: function () {
+            /// <summary>Calls the ReadStateValue method on the server-side VBDemo hub.&#10;Returns a jQuery.Deferred() promise.</summary>
+                return proxies.VBDemo.invoke.apply(proxies.VBDemo, $.merge(["ReadStateValue"], $.makeArray(arguments)));
              }
         };
 

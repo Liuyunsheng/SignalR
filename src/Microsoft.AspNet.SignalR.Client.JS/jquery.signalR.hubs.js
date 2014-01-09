@@ -282,6 +282,8 @@
 
                 // Normalize the names to lowercase
                 hubName = data.Hub.toLowerCase();
+                hubName = hubName.replace(".", "_");
+
                 eventName = data.Method.toLowerCase();
 
                 // Trigger the local invocation event
@@ -376,6 +378,9 @@
 
         // Normalize the name to lowercase
         hubName = hubName.toLowerCase();
+
+        // Replace all '.'s in the name by '_'s
+        hubName = hubName.replace(".", "_");
 
         var proxy = this.proxies[hubName];
         if (!proxy) {

@@ -7,7 +7,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Microsoft.AspNet.SignalR.Samples.Hubs.DemoHub
 {
-    [HubName("demo")]
+    [HubName("demo.hub")]
     public class DemoHub : Hub
     {
         private static readonly TaskCompletionSource<object> _neverEndingTcs = new TaskCompletionSource<object>();

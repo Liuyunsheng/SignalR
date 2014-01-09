@@ -1,5 +1,5 @@
 ﻿$(function () {
-    var demo = $.connection.demo,
+    var demo = $.connection.demo_hub,
         groupAddedCalled = false;
 
     demo.client.invoke = function (index) {

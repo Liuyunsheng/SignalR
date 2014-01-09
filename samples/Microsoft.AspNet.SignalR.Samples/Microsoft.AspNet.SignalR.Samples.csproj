@@ -203,7 +203,6 @@
     <Content Include="Raw\test\sending.htm" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\hubs.js" />
     <Content Include="Scripts\jcanvas.js" />
     <Content Include="Hubs\DrawingPad\drawingpad.js" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
